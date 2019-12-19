@@ -1,2 +1,3 @@
 .venv-maze
 .vscode/
+__pycache__/
