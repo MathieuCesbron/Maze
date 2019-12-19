@@ -28,7 +28,7 @@ class MazeEnv(gym.Env):
                               [0, 4, 0, 0],
                               [3, 3, 0, 3],
                               [0, 4, 0, 0]])
-        
+
         return self._next_observation()
 
     def _next_observation(self):
