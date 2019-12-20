@@ -22,8 +22,8 @@ class MazeEnv(gym.Env):
         self.current_step = 0
         self.max_step = 30
         self.world = np.array([[1, 0, 0, 2],
-                              [0, 4, 0, 0],
-                              [0, 3, 0, 3],
+                              [0, 0, 0, 0],
+                              [0, 3, 4, 3],
                               [0, 4, 0, 0]])
 
         return self._next_observation()
@@ -124,15 +124,14 @@ class MazeEnv(gym.Env):
         print(self.world)
 
         if self.state == "W":
-            print(f'{self.current_player} wins !')
+            print(f'Player {self.current_player} won')
             reward = 200
             done = True
         elif self.state == 'L':
-            print(f'{self.current_player} lost')
+            print(f'Player {self.current_player} lost')
             reward = -200
             done = True
         elif self.state == 'P':
-            print('ca continue !')
             reward = -1
             done = False
 
@@ -153,10 +152,11 @@ class MazeEnv(gym.Env):
         return obs, reward, done, {}
 
     def render_episode(self, win_or_lose):
-        self.success_episode.append(True if win_or_lose == 'W' else False)
-        success_rate = self.success_episode.count(True) / len(self.success_episode)
+        self.success_episode.append(
+            'Success' if win_or_lose == 'W' else 'Failure')
 
         file = open('render/render.txt', 'a')
-        file.write(f'Episode numero: {self.current_episode}\n')
-        file.write(f'Success rate: {self.success_episode[-1]}\n')
+        file.write('-------------------------------------------\n')
+        file.write(f'Episode number {self.current_episode}\n')
+        file.write(f'{self.success_episode[-1]} in {self.current_step} steps\n')
         file.close()
