@@ -1,4 +1,4 @@
 .venv-maze
 .vscode/
 __pycache__/
-render/*
+render.txt
