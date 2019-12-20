@@ -7,7 +7,7 @@ To install the libraries needed:
 pip install -r requirements.txt
 ```
 
-### Running the maze solver
+## Running the maze solver
 You just need to run the main.py file
 ```
 python main.py
