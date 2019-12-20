@@ -11,22 +11,16 @@ class MazeEnv(gym.Env):
                                             shape=(5, 4),
                                             dtype=np.int16)
         self.reward_range = (-200, 200)
-        self.current_player = 1
-        # P means the game is playable, W means somenone wins, L someone lose
-        self.state = 'P'
-        self.world = np.array([[1, 0, 0, 2],
-                              [0, 0, 0, 0],
-                              [3, 3, 0, 3],
-                              [0, 4, 0, 0]])
 
     def reset(self):
         self.current_player = 1
+        # P means the game is playable, W means somenone wins, L someone lose
         self.state = 'P'
         self.current_step = 0
         self.max_step = 30
         self.world = np.array([[1, 0, 0, 2],
-                              [0, 4, 0, 0],
-                              [3, 3, 0, 3],
+                              [0, 0, 0, 0],
+                              [0, 3, 0, 3],
                               [0, 4, 0, 0]])
 
         return self._next_observation()
@@ -35,11 +29,6 @@ class MazeEnv(gym.Env):
         obs = self.world
 
         obs = np.append(obs, [[self.current_player, 0, 0, 0]], axis=0)
-
-        if self.current_player == 1:
-            self.current_player = 2
-        else:
-            self.current_player = 1
 
         return obs
 
@@ -62,6 +51,8 @@ class MazeEnv(gym.Env):
                 self.state = 'L'
 
             elif next_pos[0] >= 0 and (int(self.world[next_pos]) == 4):
+                self.world[next_pos] = self.current_player
+                self.world[current_pos] = 0
                 self.state = 'W'
 
         elif action == 1:
@@ -80,6 +71,8 @@ class MazeEnv(gym.Env):
                 self.state = 'L'
 
             elif next_pos[1] < 3 and (int(self.world[next_pos]) == 4):
+                self.world[next_pos] = self.current_player
+                self.world[current_pos] = 0
                 self.state = 'W'
 
         elif action == 2:
@@ -98,6 +91,8 @@ class MazeEnv(gym.Env):
                 self.state = 'L'
 
             elif next_pos[0] <= 3 and (int(self.world[next_pos]) == 4):
+                self.world[next_pos] = self.current_player
+                self.world[current_pos] = 0
                 self.state = 'W'
 
         elif action == 3:
@@ -116,6 +111,8 @@ class MazeEnv(gym.Env):
                 self.state = 'L'
 
             elif next_pos[1] >= 0 and (int(self.world[next_pos]) == 4):
+                self.world[next_pos] = self.current_player
+                self.world[current_pos] = 0
                 self.state = 'W'
 
     def step(self, action):
@@ -138,6 +135,11 @@ class MazeEnv(gym.Env):
 
         if self.current_step > self.max_step:
             done = True
+
+        if self.current_player == 1:
+            self.current_player = 2
+        else:
+            self.current_player = 1
 
         obs = self._next_observation()
 
