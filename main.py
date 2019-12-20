@@ -6,4 +6,4 @@ from env import MazeEnv
 
 env = DummyVecEnv([lambda: MazeEnv()])
 model = PPO2(MlpPolicy, env, learning_rate=0.001)
-model.learn(50000)
+model.learn(500000)
