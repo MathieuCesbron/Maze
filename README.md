@@ -14,4 +14,4 @@ python main.py
 ```
 After some warnings from Tensorflow, you will see the updated maze after each steps on the output.
 
-You will also have a file render.txt in the render folder that give you a resume of each episodes played.
+You will also have a file render.txt in the render folder that give you a resume of each episode played.
