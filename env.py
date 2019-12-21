@@ -4,11 +4,15 @@ import numpy as np
 
 
 class MazeEnv(gym.Env):
-    def __init__(self):
+    def __init__(self, world):
+        self.world_start = world
         self.action_space = spaces.Discrete(4)
+
+        shape_0 = np.size(self.world_start, 0) + 1
+        shape_1 = np.size(self.world_start, 1)
         self.observation_space = spaces.Box(low=0,
                                             high=4,
-                                            shape=(5, 4),
+                                            shape=(shape_0, shape_1),
                                             dtype=np.int16)
         self.reward_range = (-200, 200)
 
@@ -21,17 +25,17 @@ class MazeEnv(gym.Env):
         self.state = 'P'
         self.current_step = 0
         self.max_step = 30
-        self.world = np.array([[1, 0, 0, 2],
-                              [0, 0, 0, 0],
-                              [0, 3, 4, 3],
-                              [0, 4, 0, 0]])
+        self.world = np.copy(self.world_start)
 
         return self._next_observation()
 
     def _next_observation(self):
         obs = self.world
 
-        obs = np.append(obs, [[self.current_player, 0, 0, 0]], axis=0)
+        data_to_add = [0] * np.size(self.world, 1)
+        data_to_add[0] = self.current_player
+
+        obs = np.append(obs, [data_to_add], axis=0)
 
         return obs
 
