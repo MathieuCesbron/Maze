@@ -60,40 +60,42 @@ class MazeEnv(gym.Env):
 
         elif action == 1:
             next_pos = (current_pos[0], current_pos[1] + 1)
+            limit = np.size(self.world, 1)
 
-            if next_pos[1] < 3 and int(self.world[next_pos]) == 0:
+            if next_pos[1] < limit and int(self.world[next_pos]) == 0:
                 self.world[next_pos] = self.current_player
                 self.world[current_pos] = 0
 
-            elif next_pos[1] < 3 and int(self.world[next_pos]) in (1, 2):
+            elif next_pos[1] < limit and int(self.world[next_pos]) in (1, 2):
                 pass
 
-            elif next_pos[1] < 3 and (int(self.world[next_pos]) == 3):
+            elif next_pos[1] < limit and (int(self.world[next_pos]) == 3):
                 self.world[next_pos] = self.current_player
                 self.world[current_pos] = 0
                 self.state = 'L'
 
-            elif next_pos[1] < 3 and (int(self.world[next_pos]) == 4):
+            elif next_pos[1] < limit and (int(self.world[next_pos]) == 4):
                 self.world[next_pos] = self.current_player
                 self.world[current_pos] = 0
                 self.state = 'W'
 
         elif action == 2:
             next_pos = (current_pos[0] + 1, current_pos[1])
+            limit = np.size(self.world, 0)
 
-            if next_pos[0] <= 3 and int(self.world[next_pos]) == 0:
+            if next_pos[0] < limit and int(self.world[next_pos]) == 0:
                 self.world[next_pos] = self.current_player
                 self.world[current_pos] = 0
 
-            elif next_pos[0] <= 3 and int(self.world[next_pos]) in (1, 2):
+            elif next_pos[0] < limit and int(self.world[next_pos]) in (1, 2):
                 pass
 
-            elif next_pos[0] <= 3 and (int(self.world[next_pos]) == 3):
+            elif next_pos[0] < limit and (int(self.world[next_pos]) == 3):
                 self.world[next_pos] = self.current_player
                 self.world[current_pos] = 0
                 self.state = 'L'
 
-            elif next_pos[0] <= 3 and (int(self.world[next_pos]) == 4):
+            elif next_pos[0] < limit and (int(self.world[next_pos]) == 4):
                 self.world[next_pos] = self.current_player
                 self.world[current_pos] = 0
                 self.state = 'W'
