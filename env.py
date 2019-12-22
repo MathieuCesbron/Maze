@@ -8,11 +8,11 @@ class MazeEnv(gym.Env):
         self.world_start = world
         self.action_space = spaces.Discrete(4)
 
-        shape_0 = np.size(self.world_start, 0) + 1
+        shape_0 = np.size(self.world_start, 0)
         shape_1 = np.size(self.world_start, 1)
         self.observation_space = spaces.Box(low=0,
                                             high=4,
-                                            shape=(shape_0, shape_1),
+                                            shape=(shape_0 + 1, shape_1),
                                             dtype=np.int16)
         self.reward_range = (-200, 200)
 
@@ -26,6 +26,10 @@ class MazeEnv(gym.Env):
         self.current_step = 0
         self.max_step = 30
         self.world = np.copy(self.world_start)
+
+        self.exploration_prize = np.ones(shape=(np.size(self.world, 0),
+                                                np.size(self.world, 1)))
+        self.bonus_reward = 0
 
         return self._next_observation()
 
@@ -48,6 +52,7 @@ class MazeEnv(gym.Env):
             if next_pos[0] >= 0 and int(self.world[next_pos]) == 0:
                 self.world[next_pos] = self.current_player
                 self.world[current_pos] = 0
+                self._exploration_prize(next_pos)
 
             elif next_pos[0] >= 0 and int(self.world[next_pos]) in (1, 2):
                 pass
@@ -56,11 +61,13 @@ class MazeEnv(gym.Env):
                 self.world[next_pos] = self.current_player
                 self.world[current_pos] = 0
                 self.state = 'L'
+                self._exploration_prize(next_pos)
 
             elif next_pos[0] >= 0 and (int(self.world[next_pos]) == 4):
                 self.world[next_pos] = self.current_player
                 self.world[current_pos] = 0
                 self.state = 'W'
+                self._exploration_prize(next_pos)
 
         elif action == 1:
             next_pos = (current_pos[0], current_pos[1] + 1)
@@ -69,6 +76,7 @@ class MazeEnv(gym.Env):
             if next_pos[1] < limit and int(self.world[next_pos]) == 0:
                 self.world[next_pos] = self.current_player
                 self.world[current_pos] = 0
+                self._exploration_prize(next_pos)
 
             elif next_pos[1] < limit and int(self.world[next_pos]) in (1, 2):
                 pass
@@ -77,11 +85,13 @@ class MazeEnv(gym.Env):
                 self.world[next_pos] = self.current_player
                 self.world[current_pos] = 0
                 self.state = 'L'
+                self._exploration_prize(next_pos)
 
             elif next_pos[1] < limit and (int(self.world[next_pos]) == 4):
                 self.world[next_pos] = self.current_player
                 self.world[current_pos] = 0
                 self.state = 'W'
+                self._exploration_prize(next_pos)
 
         elif action == 2:
             next_pos = (current_pos[0] + 1, current_pos[1])
@@ -90,6 +100,7 @@ class MazeEnv(gym.Env):
             if next_pos[0] < limit and int(self.world[next_pos]) == 0:
                 self.world[next_pos] = self.current_player
                 self.world[current_pos] = 0
+                self._exploration_prize(next_pos)
 
             elif next_pos[0] < limit and int(self.world[next_pos]) in (1, 2):
                 pass
@@ -98,11 +109,13 @@ class MazeEnv(gym.Env):
                 self.world[next_pos] = self.current_player
                 self.world[current_pos] = 0
                 self.state = 'L'
+                self._exploration_prize(next_pos)
 
             elif next_pos[0] < limit and (int(self.world[next_pos]) == 4):
                 self.world[next_pos] = self.current_player
                 self.world[current_pos] = 0
                 self.state = 'W'
+                self._exploration_prize(next_pos)
 
         elif action == 3:
             next_pos = (current_pos[0], current_pos[1] - 1)
@@ -110,6 +123,7 @@ class MazeEnv(gym.Env):
             if next_pos[1] >= 0 and int(self.world[next_pos]) == 0:
                 self.world[next_pos] = self.current_player
                 self.world[current_pos] = 0
+                self._exploration_prize(next_pos)
 
             elif next_pos[1] >= 0 and int(self.world[next_pos]) in (1, 2):
                 pass
@@ -118,11 +132,18 @@ class MazeEnv(gym.Env):
                 self.world[next_pos] = self.current_player
                 self.world[current_pos] = 0
                 self.state = 'L'
+                self._exploration_prize(next_pos)
 
             elif next_pos[1] >= 0 and (int(self.world[next_pos]) == 4):
                 self.world[next_pos] = self.current_player
                 self.world[current_pos] = 0
                 self.state = 'W'
+                self._exploration_prize(next_pos)
+
+    def _exploration_prize(self, next_pos):
+        if self.exploration_prize[next_pos] == 1:
+            self.exploration_prize[next_pos] = 0
+            self.bonus_reward += 1
 
     def step(self, action):
         self._take_action(action)
@@ -142,12 +163,17 @@ class MazeEnv(gym.Env):
             done = False
 
         if self.current_step >= self.max_step:
+            print(f'New episode number {self.current_episode + 1}')
             done = True
 
         if self.current_player == 1:
             self.current_player = 2
         else:
             self.current_player = 1
+
+        # Apply the bonus reward for this step then reset him to 0
+        reward += self.bonus_reward
+        self.bonus_reward = 0
 
         if done:
             self.render_episode(self.state)
@@ -162,7 +188,7 @@ class MazeEnv(gym.Env):
             'Success' if win_or_lose == 'W' else 'Failure')
 
         file = open('render/render.txt', 'a')
-        file.write('-------------------------------------------\n')
+        file.write('----------------------------\n')
         file.write(f'Episode number {self.current_episode}\n')
         file.write(f'{self.success_episode[-1]} in {self.current_step} steps\n')
         file.close()
