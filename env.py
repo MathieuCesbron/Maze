@@ -159,7 +159,7 @@ class MazeEnv(gym.Env):
             reward = -200
             done = True
         elif self.state == 'P':
-            reward = -1
+            reward = -2
             done = False
 
         if self.current_step >= self.max_step:
@@ -181,7 +181,7 @@ class MazeEnv(gym.Env):
 
         obs = self._next_observation()
 
-        return obs, reward, done, {}
+        return obs, reward, done, {'state': self.state}
 
     def render_episode(self, win_or_lose):
         self.success_episode.append(
