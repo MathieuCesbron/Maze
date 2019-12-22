@@ -5,11 +5,21 @@ import numpy as np
 from env import MazeEnv
 
 world = np.array([[1, 0, 0, 2, 0],
+                  [0, 0, 0, 3, 0],
                   [0, 3, 0, 3, 0],
-                  [0, 3, 0, 3, 3],
-                  [0, 4, 0, 0, 0],
+                  [0, 0, 4, 0, 0],
                   [0, 3, 0, 0, 3]])
 
 env = DummyVecEnv([lambda: MazeEnv(world)])
-model = PPO2(MlpPolicy, env, learning_rate=0.001)
-model.learn(500000)
+
+# Training
+print('TRAINING')
+model = PPO2(MlpPolicy, env, learning_rate=0.01, gamma=0.1)
+model.learn(200000)
+
+# Testing
+print('TESTING')
+obs = env.reset()
+for i in range(300):
+    action, _states = model.predict(obs)
+    obs, reward, done, info = env.step(action)
