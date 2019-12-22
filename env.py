@@ -190,5 +190,6 @@ class MazeEnv(gym.Env):
         file = open('render/render.txt', 'a')
         file.write('----------------------------\n')
         file.write(f'Episode number {self.current_episode}\n')
-        file.write(f'{self.success_episode[-1]} in {self.current_step} steps\n')
+        file.write(
+            f'{self.success_episode[-1]} in {self.current_step} steps\n')
         file.close()
