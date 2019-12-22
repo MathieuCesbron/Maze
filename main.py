@@ -14,8 +14,8 @@ env = DummyVecEnv([lambda: MazeEnv(world)])
 
 # Training
 print('TRAINING')
-model = PPO2(MlpPolicy, env, learning_rate=0.01, gamma=0.1)
-model.learn(200000)
+model = PPO2(MlpPolicy, env, learning_rate=0.01, gamma=0.000001)
+model.learn(20000)
 
 # Testing
 print('TESTING')
@@ -23,3 +23,5 @@ obs = env.reset()
 for i in range(300):
     action, _states = model.predict(obs)
     obs, reward, done, info = env.step(action)
+    if done:
+        print(f"Final state: {info[0]['state']}")
