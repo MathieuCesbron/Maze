@@ -4,9 +4,9 @@ from stable_baselines import PPO2
 import numpy as np
 from env import MazeEnv
 
-world = np.array([[1, 0, 0, 2, 0],
-                  [0, 0, 0, 3, 0],
-                  [0, 3, 0, 3, 0],
+world = np.array([[1, 0, 4, 2, 0],
+                  [4, 0, 0, 4, 0],
+                  [0, 3, 0, 0, 0],
                   [0, 0, 5, 0, 0],
                   [0, 3, 0, 0, 3]])
 

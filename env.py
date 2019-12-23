@@ -64,8 +64,19 @@ class MazeEnv(gym.Env):
                 self._exploration_prize(next_pos)
 
             elif next_pos[0] >= 0 and int(self.world[next_pos] == 4):
-                pass
+                self.world[next_pos] = self.current_player
+                self.world[current_pos] = 0
 
+                # Teleport the other agent
+                other_player = 2 if self.current_player == 1 else 1
+                other_player_pos = np.where(self.world == other_player)
+                other_next_pos = (other_player_pos[0] + 3, other_player_pos[1])
+                if other_next_pos[0] < np.size(self.world, 0):
+                    self.world[other_next_pos] = other_player
+                    self.world[other_player_pos] = 0
+
+                self.state = 'P'
+                self._exploration_prize(next_pos)
             elif next_pos[0] >= 0 and (int(self.world[next_pos]) == 5):
                 self.world[next_pos] = self.current_player
                 self.world[current_pos] = 0
@@ -88,6 +99,21 @@ class MazeEnv(gym.Env):
                 self.world[next_pos] = self.current_player
                 self.world[current_pos] = 0
                 self.state = 'L'
+                self._exploration_prize(next_pos)
+
+            elif next_pos[1] < limit and int(self.world[next_pos] == 4):
+                self.world[next_pos] = self.current_player
+                self.world[current_pos] = 0
+
+                # Teleport the other agent
+                other_player = 2 if self.current_player == 1 else 1
+                other_player_pos = np.where(self.world == other_player)
+                other_next_pos = (other_player_pos[0] + 3, other_player_pos[1])
+                if other_next_pos[0] < np.size(self.world, 0):
+                    self.world[other_next_pos] = other_player
+                    self.world[other_player_pos] = 0
+
+                self.state = 'P'
                 self._exploration_prize(next_pos)
 
             elif next_pos[1] < limit and (int(self.world[next_pos]) == 5):
@@ -114,6 +140,21 @@ class MazeEnv(gym.Env):
                 self.state = 'L'
                 self._exploration_prize(next_pos)
 
+            elif next_pos[0] < limit and int(self.world[next_pos] == 4):
+                self.world[next_pos] = self.current_player
+                self.world[current_pos] = 0
+
+                # Teleport the other agent
+                other_player = 2 if self.current_player == 1 else 1
+                other_player_pos = np.where(self.world == other_player)
+                other_next_pos = (other_player_pos[0] + 3, other_player_pos[1])
+                if other_next_pos[0] < np.size(self.world, 0):
+                    self.world[other_next_pos] = other_player
+                    self.world[other_player_pos] = 0
+
+                self.state = 'P'
+                self._exploration_prize(next_pos)
+
             elif next_pos[0] < limit and (int(self.world[next_pos]) == 5):
                 self.world[next_pos] = self.current_player
                 self.world[current_pos] = 0
@@ -135,6 +176,21 @@ class MazeEnv(gym.Env):
                 self.world[next_pos] = self.current_player
                 self.world[current_pos] = 0
                 self.state = 'L'
+                self._exploration_prize(next_pos)
+
+            elif next_pos[1] >= 0 and int(self.world[next_pos] == 4):
+                self.world[next_pos] = self.current_player
+                self.world[current_pos] = 0
+
+                # Teleport the other agent
+                other_player = 2 if self.current_player == 1 else 1
+                other_player_pos = np.where(self.world == other_player)
+                other_next_pos = (other_player_pos[0] + 3, other_player_pos[1])
+                if other_next_pos[0] < np.size(self.world, 0):
+                    self.world[other_next_pos] = other_player
+                    self.world[other_player_pos] = 0
+
+                self.state = 'P'
                 self._exploration_prize(next_pos)
 
             elif next_pos[1] >= 0 and (int(self.world[next_pos]) == 5):
