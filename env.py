@@ -57,13 +57,16 @@ class MazeEnv(gym.Env):
             elif next_pos[0] >= 0 and int(self.world[next_pos]) in (1, 2):
                 pass
 
-            elif next_pos[0] >= 0 and (int(self.world[next_pos]) == 3):
+            elif next_pos[0] >= 0 and int(self.world[next_pos] == 3):
                 self.world[next_pos] = self.current_player
                 self.world[current_pos] = 0
                 self.state = 'L'
                 self._exploration_prize(next_pos)
 
-            elif next_pos[0] >= 0 and (int(self.world[next_pos]) == 4):
+            elif next_pos[0] >= 0 and int(self.world[next_pos] == 4):
+                pass
+
+            elif next_pos[0] >= 0 and (int(self.world[next_pos]) == 5):
                 self.world[next_pos] = self.current_player
                 self.world[current_pos] = 0
                 self.state = 'W'
@@ -87,7 +90,7 @@ class MazeEnv(gym.Env):
                 self.state = 'L'
                 self._exploration_prize(next_pos)
 
-            elif next_pos[1] < limit and (int(self.world[next_pos]) == 4):
+            elif next_pos[1] < limit and (int(self.world[next_pos]) == 5):
                 self.world[next_pos] = self.current_player
                 self.world[current_pos] = 0
                 self.state = 'W'
@@ -111,7 +114,7 @@ class MazeEnv(gym.Env):
                 self.state = 'L'
                 self._exploration_prize(next_pos)
 
-            elif next_pos[0] < limit and (int(self.world[next_pos]) == 4):
+            elif next_pos[0] < limit and (int(self.world[next_pos]) == 5):
                 self.world[next_pos] = self.current_player
                 self.world[current_pos] = 0
                 self.state = 'W'
@@ -134,7 +137,7 @@ class MazeEnv(gym.Env):
                 self.state = 'L'
                 self._exploration_prize(next_pos)
 
-            elif next_pos[1] >= 0 and (int(self.world[next_pos]) == 4):
+            elif next_pos[1] >= 0 and (int(self.world[next_pos]) == 5):
                 self.world[next_pos] = self.current_player
                 self.world[current_pos] = 0
                 self.state = 'W'
