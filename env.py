@@ -211,7 +211,7 @@ class MazeEnv(gym.Env):
 
         if self.state == "W":
             print(f'Player {self.current_player} won')
-            reward = 200
+            reward = 100 * (1 + 1 / self.current_step)
             done = True
         elif self.state == 'L':
             print(f'Player {self.current_player} lost')
