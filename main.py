@@ -14,8 +14,8 @@ env = DummyVecEnv([lambda: MazeEnv(world)])
 
 # Training
 print('TRAINING')
-model = PPO2(MlpPolicy, env, learning_rate=0.01, gamma=0.000001, lam=0)
-model.learn(30000)
+model = PPO2(MlpPolicy, env, learning_rate=0.001, gamma=0.000001, lam=0)
+model.learn(100000)
 
 # Testing
 print('TESTING')
