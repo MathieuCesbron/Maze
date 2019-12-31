@@ -3,22 +3,19 @@ from stable_baselines.common.vec_env import DummyVecEnv
 from stable_baselines import PPO2
 import numpy as np
 from env import MazeEnv
+from world import new_world
 
-world = np.array([[1, 0, 2, 0, 0],
-                  [0, 0, 0, 0, 0],
-                  [4, 0, 0, 0, 0],
-                  [0, 0, 3, 3, 0],
-                  [0, 0, 3, 5, 0]])
-
-env = DummyVecEnv([lambda: MazeEnv(world)])
 
 # Training
-print('TRAINING')
-model = PPO2(MlpPolicy, env, learning_rate=0.001, gamma=0.000001, lam=0)
-model.learn(1000000)
+for i in range(100):
+    world = new_world(5)
+    env = DummyVecEnv([lambda: MazeEnv(world)])
+    model = PPO2(MlpPolicy, env, learning_rate=0.001, gamma=0.000001, lam=0)
+    model.learn(300)
 
 # Testing
-print('TESTING')
+world = new_world(5)
+env = DummyVecEnv([lambda: MazeEnv(world)])
 result_test = []
 obs = env.reset()
 for i in range(300):
