@@ -1,7 +1,7 @@
 import numpy as np
 import random
 
-def world(n):
+def new_world(n):
     '''Generate random maze for the model to train'''
     if not isinstance(n, int):
         raise TypeError('n should be a positive integer')
@@ -30,3 +30,5 @@ def world(n):
 
     # Add the exit to the maze
     maze[n - 1][random.randint(0, n - 1)] = 5
+
+    return maze
