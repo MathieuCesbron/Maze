@@ -2,3 +2,4 @@
 .vscode/
 __pycache__/
 render.txt
+*.txt
