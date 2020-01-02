@@ -7,10 +7,10 @@ from world import new_world
 
 
 # Training
-for i in range(100):
+for i in range(2):
     world = new_world(5)
     env = DummyVecEnv([lambda: MazeEnv(world)])
-    model = PPO2(MlpPolicy, env, learning_rate=0.001, gamma=0.000001, lam=0)
+    model = PPO2(MlpPolicy, env, learning_rate=0.001, gamma=0.000001, lam=0.01)
     model.learn(300)
 
 # Testing
